@@ -1,3 +1,24 @@
+/data-mounts
+
+/tmp
+static
+.undodir
+Session.vim
+.session.vim
+*.vim
+
+.env
+
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
