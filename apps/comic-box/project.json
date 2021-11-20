@@ -1,0 +1,52 @@
+{
+  "root": "apps/comic-box",
+  "sourceRoot": "apps/comic-box/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/comic-box",
+        "main": "apps/comic-box/src/main.ts",
+        "tsConfig": "apps/comic-box/tsconfig.app.json",
+        "assets": ["apps/comic-box/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/comic-box/src/environments/environment.ts",
+              "with": "apps/comic-box/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "comic-box:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/comic-box/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/comic-box"],
+      "options": {
+        "jestConfig": "apps/comic-box/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

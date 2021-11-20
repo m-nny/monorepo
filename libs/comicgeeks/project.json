@@ -1,0 +1,23 @@
+{
+  "root": "libs/comicgeeks",
+  "sourceRoot": "libs/comicgeeks/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/comicgeeks/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/comicgeeks"],
+      "options": {
+        "jestConfig": "libs/comicgeeks/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

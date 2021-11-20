@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "comic-box": "apps/comic-box",
+    "comicgeeks": "libs/comicgeeks",
     "doja": "apps/doja"
   }
 }
