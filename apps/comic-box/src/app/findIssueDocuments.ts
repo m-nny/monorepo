@@ -30,7 +30,6 @@ async function searchDocuments(access_token: string, q: string, count = 3): Prom
       count,
     },
   });
-  console.log({ q, response: data.response });
   return data.response.items;
 }
 
@@ -46,7 +45,7 @@ export async function findIssueDocument(access_token: string, issue: Comic): Pro
 export async function findIssueDocuments(issues: Comic[]) {
   const access_token = await authorizeVk();
   const results = await Promise.all(
-    issues.map(async (issue) => [issue.name, await findIssueDocument(access_token, issue)])
+    issues.map(async (issue) => ({ issue, document: await findIssueDocument(access_token, issue) }))
   );
   return results;
 }
