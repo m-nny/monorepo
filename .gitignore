@@ -1,4 +1,8 @@
+/data
 /data-mounts
+
+!.env
+.env.local
 
 /tmp
 static
@@ -7,7 +11,6 @@ Session.vim
 .session.vim
 *.vim
 
-.env
 
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 
