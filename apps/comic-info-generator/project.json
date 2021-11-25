@@ -1,0 +1,52 @@
+{
+  "root": "apps/comic-info-generator",
+  "sourceRoot": "apps/comic-info-generator/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/comic-info-generator",
+        "main": "apps/comic-info-generator/src/main.ts",
+        "tsConfig": "apps/comic-info-generator/tsconfig.app.json",
+        "assets": ["apps/comic-info-generator/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/comic-info-generator/src/environments/environment.ts",
+              "with": "apps/comic-info-generator/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "comic-info-generator:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/comic-info-generator/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/comic-info-generator"],
+      "options": {
+        "jestConfig": "apps/comic-info-generator/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
