@@ -1,15 +1,14 @@
 import gm from 'gm';
 import _ from 'lodash';
-import path from 'path';
+import { CONFIDENCE_THRESHOLD } from './constants';
 import { logger } from './logger';
 import { BoxType, ShootResponse } from './types';
 
 export type DrawImageArgs = {
   jpgPath: string;
+  outputPath: string;
   response: ShootResponse;
 };
-
-const CONFIDENCE_THRESHOLD = 0.6;
 
 export const drawRectangle = (
   jpgPath: string,
@@ -31,7 +30,11 @@ export const drawRectangle = (
     });
   });
 
-export const drawImageBox = async ({ jpgPath, response }: DrawImageArgs) => {
+export const drawImageBox = async ({
+  jpgPath,
+  response,
+  outputPath,
+}: DrawImageArgs) => {
   const boxes = _(response.foundItems)
     .filter((item) => item.className === 'phone')
     .filter((item) => item.confidence > CONFIDENCE_THRESHOLD)
@@ -42,10 +45,8 @@ export const drawImageBox = async ({ jpgPath, response }: DrawImageArgs) => {
       'No phones found'
     );
   }
-  const outputPath = path.join('tmp', path.basename(jpgPath));
-  // await fs.remove(outputPath);
   await drawRectangle(jpgPath, outputPath, _(boxes).map('box').value());
-  logger.info(
+  logger.debug(
     { outputPath, boxes: boxes.length },
     `Image is written to ${outputPath}`
   );

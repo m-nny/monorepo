@@ -1,16 +1,18 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { BASE_DIR } from './constants';
 import { logger } from './logger';
-
-export const BASE_DIR = './data-mounts/2021.10.11.predictions.cheated';
 
 export type GetFrameJpgPathArgs = {
   batchId: string;
   filename: string;
 };
 
-export const GetFrameJpgPath = ({ batchId, filename }: GetFrameJpgPathArgs) =>
+export const getFrameJpgPath = ({ batchId, filename }: GetFrameJpgPathArgs) =>
   path.join(BASE_DIR, 'frames', batchId, filename);
+
+export const getOuputJpgPath = ({ batchId, filename }: GetFrameJpgPathArgs) =>
+  path.join(BASE_DIR, 'frames_rect', batchId, filename);
 
 export type ImageInfo = {
   batchId: string;
