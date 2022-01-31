@@ -1,29 +1,15 @@
 import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs-extra';
+import { ShootResponse } from './types';
 
-export const shootImage = (jpgPath: string): Promise<ShootResponse> => {
+export const shootImage = async (jpgPath: string): Promise<ShootResponse> => {
   const formData = new FormData();
   formData.append('image', fs.createReadStream(jpgPath));
-  return axios
-    .post<ShootResponse>(`http://localhost:3005/tofu/phones/image`, formData, {
-      headers: formData.getHeaders(),
-    })
-    .then((res) => res.data);
-};
-
-type BoxType = { left: number; top: number; right: number; bottom: number };
-
-type FountItemType = {
-  confidence: number;
-  className: string;
-  box: BoxType;
-};
-
-export type ShootResponse = {
-  foundItems: FountItemType[];
-  foundItemsCount: number;
-  unfilteredItemsCount: number;
-  foundClasses: string[];
-  foundClassScores: Record<string, number>;
+  const res = await axios.post<ShootResponse>(
+    `http://localhost:3005/tofu/crop_and_phones/image`,
+    formData,
+    { headers: formData.getHeaders() }
+  );
+  return res.data;
 };

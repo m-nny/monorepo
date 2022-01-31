@@ -1,5 +1,8 @@
+import gm from 'gm';
 import _ from 'lodash';
-import { ShootResponse } from './shootImage';
+import path from 'path';
+import { logger } from './logger';
+import { BoxType, ShootResponse } from './types';
 
 export type DrawImageArgs = {
   jpgPath: string;
@@ -8,9 +11,42 @@ export type DrawImageArgs = {
 
 const CONFIDENCE_THRESHOLD = 0.6;
 
-export const DrawImageBox = async ({ jpgPath, response }: DrawImageArgs) => {
+export const drawRectangle = (
+  jpgPath: string,
+  outputPath: string,
+  rectangles: BoxType[]
+) =>
+  new Promise<void>((res, rej) => {
+    const image = gm(jpgPath);
+    rectangles.forEach(({ top, left, bottom, right }) =>
+      image
+        .stroke('#FF0000', 2)
+        .fill('none')
+        .drawRectangle(left, top, right, bottom)
+    );
+
+    image.write(outputPath, (err) => {
+      if (err) rej(err);
+      res();
+    });
+  });
+
+export const drawImageBox = async ({ jpgPath, response }: DrawImageArgs) => {
   const boxes = _(response.foundItems)
     .filter((item) => item.className === 'phone')
     .filter((item) => item.confidence > CONFIDENCE_THRESHOLD)
     .value();
+  if (boxes.length === 0) {
+    logger.warn(
+      { jpgPath, response: response.foundClassScores },
+      'No phones found'
+    );
+  }
+  const outputPath = path.join('tmp', path.basename(jpgPath));
+  // await fs.remove(outputPath);
+  await drawRectangle(jpgPath, outputPath, _(boxes).map('box').value());
+  logger.info(
+    { outputPath, boxes: boxes.length },
+    `Image is written to ${outputPath}`
+  );
 };
