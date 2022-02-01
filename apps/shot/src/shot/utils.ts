@@ -11,7 +11,10 @@ export type GetFrameJpgPathArgs = {
 export const getFrameJpgPath = ({ batchId, filename }: GetFrameJpgPathArgs) =>
   path.join(BASE_DIR, 'frames', batchId, filename);
 
-export const getOuputJpgPath = ({ batchId, filename }: GetFrameJpgPathArgs) =>
+export const getRectFrameJpgPath = ({
+  batchId,
+  filename,
+}: GetFrameJpgPathArgs) =>
   path.join(BASE_DIR, 'frames_rect', batchId, filename);
 
 export type ImageInfo = {
